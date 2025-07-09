@@ -11,10 +11,9 @@ struct ContentView: View {
     
     var correctAnswer: String = "Happiness"
     
-    //if is correct, have right image, else have wrong image
-    @State var isCorrect: Bool = true
-    
     @State var isVisible: Bool = false
+    
+    @State var label: String = ""
     
     let rightImage: String = "checkmark"
     let wrongImage: String = "xmark"
@@ -51,7 +50,8 @@ struct ContentView: View {
                 Spacer()
                 HStack {
                     Button {
-                        
+                        label = "Happiness"
+                        isVisible = true
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -62,20 +62,22 @@ struct ContentView: View {
                                 .font(.headline)
                         }
                     }
-                    
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(isCorrect ? Color.green : Color.red, lineWidth: 3)
-                            .frame(width: 50, height: 50)
-                        Image(systemName: isCorrect ? rightImage : wrongImage)
-                            .foregroundStyle(.white)
-                            .font(.largeTitle)
+                    if isVisible {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.green, lineWidth: 3)
+                                .frame(width: 50, height: 50)
+                            Image(systemName: rightImage)
+                                .foregroundStyle(.white)
+                                .font(.largeTitle)
+                        }
                     }
                 }
                 
                 HStack {
                     Button {
-                        
+                        label = "Sadness"
+                        isVisible = true
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -87,18 +89,20 @@ struct ContentView: View {
                         }
                     }
                     
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(isCorrect ? Color.green : Color.red, lineWidth: 3)
-                            .frame(width: 50, height: 50)
-                        Image(systemName: isCorrect ? rightImage : wrongImage)
-                            .foregroundStyle(.white)
-                            .font(.largeTitle)
+                    if isVisible {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.red, lineWidth: 3)
+                                .frame(width: 50, height: 50)
+                            Image(systemName: wrongImage)
+                                .foregroundStyle(.white)
+                                .font(.largeTitle)
+                        }
                     }
                 }
                 HStack {
                     Button {
-                        
+                        isVisible = true
                     } label: {
                         
                         ZStack {
@@ -111,13 +115,15 @@ struct ContentView: View {
                         }
                     }
                     
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(isCorrect ? Color.green : Color.red, lineWidth: 3)
-                            .frame(width: 50, height: 50)
-                        Image(systemName: isCorrect ? rightImage : wrongImage)
-                            .foregroundStyle(.white)
-                            .font(.largeTitle)
+                    if isVisible {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.red, lineWidth: 3)
+                                .frame(width: 50, height: 50)
+                            Image(systemName: wrongImage)
+                                .foregroundStyle(.white)
+                                .font(.largeTitle)
+                        }
                     }
                 }
                 Button {
@@ -144,11 +150,6 @@ struct ContentView: View {
         }
     }
     
-    //func check if correct answer
-    
-    func checkAnswer() {
-        
-    }
 }
 
 #Preview {
