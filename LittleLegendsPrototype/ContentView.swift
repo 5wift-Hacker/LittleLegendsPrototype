@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var selectedAnswer: String = ""
+    @State var correctAnswerChosen: Bool = false
+    @State var wrongAnswerChosen: Bool = false
     
     @State var isVisible: Bool = false
     
-    let correctAnswer: String = "Happiness ☺️"
+    @State var isCorrect: Bool = false
     
     let tickOrX: String = ""
     
@@ -52,16 +53,22 @@ struct ContentView: View {
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isVisible = true
                         }
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            isCorrect = true
+                        }
+                        correctAnswerChosen = true
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .frame(height: 50)
+                                .foregroundStyle(.yellow)
+                                .frame(height: 60)
                                 .frame(maxWidth: .infinity)
-                            Text("Happiness ☺️")
-                                .foregroundStyle(.white)
+                            Text("Excitement ☺️")
+                                .foregroundStyle(.black)
                                 .font(.headline)
                         }
                     }
+                    
                     if isVisible {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -79,16 +86,21 @@ struct ContentView: View {
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isVisible = true
                         }
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            isCorrect = false
+                        }
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .frame(height: 50)
+                                .foregroundStyle(.indigo)
+                                .frame(height: 60)
                                 .frame(maxWidth: .infinity)
                             Text("Sadness 🥺")
                                 .foregroundStyle(.white)
                                 .font(.headline)
                         }
                     }
+                    .disabled(!isCorrect == false)
                     
                     if isVisible {
                         ZStack {
@@ -106,17 +118,22 @@ struct ContentView: View {
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isVisible = true
                         }
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            isCorrect = false
+                        }
                     } label: {
                         
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
-                                .frame(height: 50)
+                                .foregroundStyle(.red)
+                                .frame(height: 60)
                                 .frame(maxWidth: .infinity)
                             Text("Anger 😡")
                                 .foregroundStyle(.white)
                                 .font(.headline)
                         }
                     }
+                    .disabled(!isCorrect == false)
                     
                     if isVisible {
                         ZStack {
@@ -129,43 +146,53 @@ struct ContentView: View {
                         }
                     }
                 }
+                
                 HStack {
                     Button {
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isVisible = false
                         }
-                    } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(height: 50)
-                                .frame(maxWidth: .infinity)
-                            Text("Retry")
-                                .foregroundStyle(.white)
-                                .font(.headline)
+                        withAnimation {
+                            isCorrect = false
                         }
+                    } label: {
+                        
+                        if isCorrect {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(!isCorrect ? .gray : .black)
+                                    .frame(height: 50)
+                                    .frame(maxWidth: .infinity)
+                                Text(isCorrect ? "🥳🥳🥳🥳🥳" : "Retry")
+                                    .foregroundStyle(.white)
+                                    .font(isCorrect ? .title : .headline)
+                            }
+                        }
+                        
                     }
+                    .disabled(isCorrect == true || correctAnswerChosen == true)
                     
                     Button {
                         
-                    } label: {
+                    }
+                    label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(.green)
                                 .frame(height: 50)
                                 .frame(maxWidth: .infinity)
                             HStack {
-                                Text("Next")
+                                Text(!isCorrect ? "Choose an Emotion" : "Next")
                                     .foregroundStyle(.white)
                                     .font(.headline)
-                                Image(systemName: "arrow.right")
+                                Image(systemName: !isCorrect ? "arrow.up" : "arrow.right")
                                     .foregroundStyle(.white)
                                     .imageScale(.large)
                             }
                         }
                     }
                 }
-
             }
-            
             .padding()
         }
     }
