@@ -10,13 +10,12 @@ import SwiftUI
 struct ContentView: View {
     
     @State var correctAnswerChosen: Bool = false
-    @State var wrongAnswerChosen: Bool = false
+    
+    @State var buttonTapped: Bool = false
     
     @State var isVisible: Bool = false
     
     @State var isCorrect: Bool = false
-    
-    let tickOrX: String = ""
     
     var body: some View {
         ZStack {
@@ -56,6 +55,10 @@ struct ContentView: View {
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isCorrect = true
                         }
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            buttonTapped = true
+                        }
+                        
                         correctAnswerChosen = true
                     } label: {
                         ZStack {
@@ -68,6 +71,7 @@ struct ContentView: View {
                                 .font(.headline)
                         }
                     }
+                    .disabled(isCorrect == true)
                     
                     if isVisible {
                         ZStack {
@@ -88,6 +92,9 @@ struct ContentView: View {
                         }
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isCorrect = false
+                        }
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            buttonTapped = true
                         }
                     } label: {
                         ZStack {
@@ -121,6 +128,9 @@ struct ContentView: View {
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isCorrect = false
                         }
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            buttonTapped = true
+                        }
                     } label: {
                         
                         ZStack {
@@ -152,23 +162,27 @@ struct ContentView: View {
                         withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isVisible = false
                         }
-                        withAnimation {
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
                             isCorrect = false
+                        }
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            buttonTapped = false
                         }
                     } label: {
                         
-                        if isCorrect {
+                        if buttonTapped {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(!isCorrect ? .gray : .black)
+                                    .foregroundStyle(isCorrect ? .black : .blue)
                                     .frame(height: 50)
                                     .frame(maxWidth: .infinity)
+                                
                                 Text(isCorrect ? "🥳🥳🥳🥳🥳" : "Retry")
                                     .foregroundStyle(.white)
                                     .font(isCorrect ? .title : .headline)
+                                
                             }
                         }
-                        
                     }
                     .disabled(isCorrect == true || correctAnswerChosen == true)
                     
@@ -176,25 +190,55 @@ struct ContentView: View {
                         
                     }
                     label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(.green)
-                                .frame(height: 50)
-                                .frame(maxWidth: .infinity)
-                            HStack {
-                                Text(!isCorrect ? "Choose an Emotion" : "Next")
-                                    .foregroundStyle(.white)
-                                    .font(.headline)
-                                Image(systemName: !isCorrect ? "arrow.up" : "arrow.right")
-                                    .foregroundStyle(.white)
-                                    .imageScale(.large)
+                        if !buttonTapped {
+                            
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(.green)
+                                    .frame(height: 50)
+                                    .frame(maxWidth: .infinity)
+                                HStack {
+                                    Text("Choose an Emotion")
+                                        .foregroundStyle(.white)
+                                        .font(.headline)
+                                    Image(systemName: "arrow.up")
+                                        .foregroundStyle(.white)
+                                        .imageScale(.large)
+                                }
                             }
                         }
                     }
                 }
             }
             .padding()
+            
+            .overlay {
+                HStack {
+                    Spacer()
+                    VStack {
+                        
+                        Button(action: {
+                            withAnimation {
+                                resetAll()
+                            }
+                        }, label: {
+                            Image(systemName: "arrow.trianglehead.counterclockwise.rotate.90")
+                                .padding(5)
+                        })
+                        .buttonStyle(.glassProminent)
+                        Spacer()
+                    }
+                    .padding()
+                }
+            }
         }
+    }
+    
+    func resetAll() {
+        isCorrect = false
+        isVisible = false
+        buttonTapped = false
+        correctAnswerChosen = false
     }
     
 }
