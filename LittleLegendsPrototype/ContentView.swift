@@ -9,14 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     
-    var correctAnswer: String = "Happiness"
+    @State var selectedAnswer: String = ""
     
     @State var isVisible: Bool = false
     
-    @State var label: String = ""
+    let correctAnswer: String = "Happiness ☺️"
     
-    let rightImage: String = "checkmark"
-    let wrongImage: String = "xmark"
+    let tickOrX: String = ""
     
     var body: some View {
         ZStack {
@@ -50,8 +49,9 @@ struct ContentView: View {
                 Spacer()
                 HStack {
                     Button {
-                        label = "Happiness"
-                        isVisible = true
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            isVisible = true
+                        }
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -67,7 +67,7 @@ struct ContentView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .strokeBorder(Color.green, lineWidth: 3)
                                 .frame(width: 50, height: 50)
-                            Image(systemName: rightImage)
+                            Image(systemName: "checkmark")
                                 .foregroundStyle(.white)
                                 .font(.largeTitle)
                         }
@@ -76,8 +76,9 @@ struct ContentView: View {
                 
                 HStack {
                     Button {
-                        label = "Sadness"
-                        isVisible = true
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            isVisible = true
+                        }
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10)
@@ -94,7 +95,7 @@ struct ContentView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .strokeBorder(Color.red, lineWidth: 3)
                                 .frame(width: 50, height: 50)
-                            Image(systemName: wrongImage)
+                            Image(systemName: "xmark")
                                 .foregroundStyle(.white)
                                 .font(.largeTitle)
                         }
@@ -102,7 +103,9 @@ struct ContentView: View {
                 }
                 HStack {
                     Button {
-                        isVisible = true
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            isVisible = true
+                        }
                     } label: {
                         
                         ZStack {
@@ -120,26 +123,43 @@ struct ContentView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .strokeBorder(Color.red, lineWidth: 3)
                                 .frame(width: 50, height: 50)
-                            Image(systemName: wrongImage)
+                            Image(systemName: "xmark")
                                 .foregroundStyle(.white)
                                 .font(.largeTitle)
                         }
                     }
                 }
-                Button {
-                    
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .frame(height: 50)
-                            .frame(maxWidth: .infinity)
-                        HStack {
-                            Text("Next")
+                HStack {
+                    Button {
+                        withAnimation(.spring(duration: 0.3, bounce: 0.5)) {
+                            isVisible = false
+                        }
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 50)
+                                .frame(maxWidth: .infinity)
+                            Text("Retry")
                                 .foregroundStyle(.white)
                                 .font(.headline)
-                            Image(systemName: "arrow.right")
-                                .foregroundStyle(.white)
-                                .imageScale(.large)
+                        }
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 50)
+                                .frame(maxWidth: .infinity)
+                            HStack {
+                                Text("Next")
+                                    .foregroundStyle(.white)
+                                    .font(.headline)
+                                Image(systemName: "arrow.right")
+                                    .foregroundStyle(.white)
+                                    .imageScale(.large)
+                            }
                         }
                     }
                 }
