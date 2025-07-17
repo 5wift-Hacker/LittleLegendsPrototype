@@ -11,7 +11,7 @@ import SwiftUI
 struct LittleLegendsPrototypeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Page1()
         }
     }
 }
